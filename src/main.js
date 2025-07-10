@@ -1,3 +1,6 @@
+import * as OBC from "@thatopen/components";
+import * as WEBIFC from "web-ifc";
+
 document.addEventListener("DOMContentLoaded", async () => {
   const container = document.getElementById("container");
   if (!container) {
@@ -12,7 +15,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   world.scene = new OBC.SimpleScene(components);
   world.renderer = new OBC.SimpleRenderer(components, container);
   world.camera = new OBC.SimpleCamera(components);
-  await components.init();
+  components.init();
   world.scene.setup();
   world.camera.controls.setLookAt(10, 10, 10, 0, 0, 0);
   world.scene.three.background = null;
