@@ -1,15 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>IFC Viewer</title>
-    <style>
-      html, body { margin: 0; padding: 0; height: 100%; overflow: hidden; }
-      #container { width: 100%; height: 100vh; }
-    </style>
-  </head>
-  <body>
-    <div id="container"></div>
-    <script type="module" src="/src/main.js"></script>
-  </body>
+<head>
+  <meta charset="UTF-8" />
+  <title>IFC Viewer - Tabs</title>
+  <style>
+    body { margin: 0; font-family: sans-serif; }
+    #tabs {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      background: #eee;
+      border-bottom: 1px solid #ccc;
+    }
+    .tab {
+      padding: 6px 12px;
+      cursor: pointer;
+      border: 1px solid #ccc;
+      background: white;
+      border-radius: 4px 4px 0 0;
+    }
+    .tab.active {
+      background: #ddd;
+      font-weight: bold;
+    }
+    #container {
+      width: 100%;
+      height: calc(100vh - 50px);
+    }
+  </style>
+</head>
+<body>
+  <div id="tabs"></div>
+  <div id="container"></div>
+  <script type="module" src="/main.js"></script>
+</body>
 </html>
