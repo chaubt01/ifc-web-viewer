@@ -8,8 +8,8 @@
   },
   "type": "module",
   "dependencies": {
-    "@thatopen/components": "^0.0.89",
-    "web-ifc": "^0.0.44"
+    "@thatopen/components": "^2.4.11",
+    "web-ifc": "^0.0.68"
   },
   "devDependencies": {
     "vite": "^5.0.0"
