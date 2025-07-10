@@ -1,6 +1,7 @@
 import * as OBC from "@thatopen/components";
 import * as WEBIFC from "web-ifc";
 
+// 1. Setup scene
 const container = document.getElementById("container");
 const components = new OBC.Components();
 const worlds = components.get(OBC.Worlds);
@@ -14,12 +15,13 @@ world.scene.setup();
 world.camera.controls.setLookAt(12, 6, 8, 0, 0, -10);
 world.scene.three.background = null;
 
+// 2. Load IFC từ proxy
 const fragments = components.get(OBC.FragmentsManager);
 const fragmentIfcLoader = components.get(OBC.IfcLoader);
 await fragmentIfcLoader.setup();
 fragmentIfcLoader.settings.webIfc.COORDINATE_TO_ORIGIN = true;
 
-const baseProxy = "https://my-ifc-project.onrender.com"; // Địa chỉ proxy đã deploy
+const baseProxy = "https://my-ifc-project.onrender.com";
 
 async function fetchAllFileNames() {
   const res = await fetch(`${baseProxy}/list-ifc`);
@@ -40,7 +42,7 @@ async function loadAllIfcs() {
       world.scene.three.add(model);
     }
 
-    world.camera.fitToScene(); // Zoom vừa mô hình
+    world.camera.fitToScene();
   } catch (err) {
     console.error("❌ Lỗi tải IFC:", err);
   }
