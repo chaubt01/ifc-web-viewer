@@ -19,27 +19,36 @@ const fragmentIfcLoader = components.get(OBC.IfcLoader);
 await fragmentIfcLoader.setup();
 fragmentIfcLoader.settings.webIfc.COORDINATE_TO_ORIGIN = true;
 
-const baseProxy = "https://my-ifc-project.onrender.com";
+const baseUrl = "https://my-ifc-project.onrender.com";
+const select = document.getElementById("fileSelect");
 
-async function fetchFileList() {
-  const res = await fetch(`${baseProxy}/latest-ifc`);
-  const fileName = await res.text();
-  return fileName;
+async function fetchAllIFCs() {
+  const res = await fetch(`${baseUrl}/list-ifc`);
+  const files = await res.json();
+  return files;
 }
 
-async function loadLatestIfc() {
-  try {
-    const fileName = await fetchFileList();
-    console.log("📂 File mới nhất:", fileName);
-
-    const fileRes = await fetch(`${baseProxy}/download-ifc?file=${encodeURIComponent(fileName)}`);
-    const buffer = await fileRes.arrayBuffer();
-    const model = await fragmentIfcLoader.load(new Uint8Array(buffer));
-    model.name = fileName;
-    world.scene.three.add(model);
-  } catch (err) {
-    console.error("❌ Lỗi tải IFC:", err);
-  }
+async function loadIfcFromFile(fileName) {
+  const fileRes = await fetch(`${baseUrl}/download-ifc?file=${encodeURIComponent(fileName)}`);
+  const buffer = await fileRes.arrayBuffer();
+  const model = await fragmentIfcLoader.load(new Uint8Array(buffer));
+  model.name = fileName;
+  world.scene.clear();
+  world.scene.three.add(model);
 }
 
-loadLatestIfc();
+select.addEventListener("change", async () => {
+  await loadIfcFromFile(select.value);
+});
+
+const files = await fetchAllIFCs();
+files.forEach(file => {
+  const option = document.createElement("option");
+  option.value = file;
+  option.textContent = file;
+  select.appendChild(option);
+});
+
+if (files.length > 0) {
+  await loadIfcFromFile(files[0]);
+}
