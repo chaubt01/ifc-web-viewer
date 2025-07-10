@@ -19,36 +19,31 @@ const fragmentIfcLoader = components.get(OBC.IfcLoader);
 await fragmentIfcLoader.setup();
 fragmentIfcLoader.settings.webIfc.COORDINATE_TO_ORIGIN = true;
 
-const baseUrl = "https://my-ifc-project.onrender.com";
-const select = document.getElementById("fileSelect");
+const baseProxy = "https://my-ifc-project.onrender.com"; // Địa chỉ proxy đã deploy
 
-async function fetchAllIFCs() {
-  const res = await fetch(`${baseUrl}/list-ifc`);
-  const files = await res.json();
+async function fetchAllFileNames() {
+  const res = await fetch(`${baseProxy}/list-ifc`);
+  const files = await res.json(); // Nhận mảng tên file từ proxy
   return files;
 }
 
-async function loadIfcFromFile(fileName) {
-  const fileRes = await fetch(`${baseUrl}/download-ifc?file=${encodeURIComponent(fileName)}`);
-  const buffer = await fileRes.arrayBuffer();
-  const model = await fragmentIfcLoader.load(new Uint8Array(buffer));
-  model.name = fileName;
-  world.scene.clear();
-  world.scene.three.add(model);
+async function loadAllIfcs() {
+  try {
+    const fileNames = await fetchAllFileNames();
+    console.log("📂 Tất cả file IFC:", fileNames);
+
+    for (const fileName of fileNames) {
+      const fileRes = await fetch(`${baseProxy}/download-ifc?file=${encodeURIComponent(fileName)}`);
+      const buffer = await fileRes.arrayBuffer();
+      const model = await fragmentIfcLoader.load(new Uint8Array(buffer));
+      model.name = fileName;
+      world.scene.three.add(model);
+    }
+
+    world.camera.fitToScene(); // Zoom vừa mô hình
+  } catch (err) {
+    console.error("❌ Lỗi tải IFC:", err);
+  }
 }
 
-select.addEventListener("change", async () => {
-  await loadIfcFromFile(select.value);
-});
-
-const files = await fetchAllIFCs();
-files.forEach(file => {
-  const option = document.createElement("option");
-  option.value = file;
-  option.textContent = file;
-  select.appendChild(option);
-});
-
-if (files.length > 0) {
-  await loadIfcFromFile(files[0]);
-}
+loadAllIfcs();
