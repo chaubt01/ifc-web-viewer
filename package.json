@@ -1,18 +1,19 @@
 {
-  "name": "ifc-web-viewer",
-  "version": "1.0.0",
-  "description": "IFC Viewer using @thatopen/components and web-ifc",
+  "name": "ifc-viewer",
+  "private": true,
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
   },
-  "dependencies": {
-    "@thatopen/components": "^0.0.82",
-    "web-ifc": "^0.0.44"
-  },
   "devDependencies": {
-    "vite": "^5.2.0"
+    "vite": "^7.0.3"
+  },
+  "dependencies": {
+    "@thatopen/components": "^2.4.11",
+    "three": "^0.178.0",
+    "web-ifc": "^0.0.68"
   }
 }
