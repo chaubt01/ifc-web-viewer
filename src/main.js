@@ -1,8 +1,6 @@
 import * as OBC from "@thatopen/components";
 
-const NEXTCLOUD_URL = "https://bimtechcloud.ddns.net/public.php/webdav";
-const SHARE_TOKEN = "bEYRrq8C8y2xM4q";
-const SHARE_PASSWORD = "180523bimtech"; // Thay bằng mật khẩu thực tế
+const PROXY_URL = "https://ifc-proxy.vercel.app"; // Thay bằng URL proxy của bạn
 
 const container = document.getElementById("container");
 
@@ -28,25 +26,10 @@ fragmentIfcLoader.settings.webIfc.COORDINATE_TO_ORIGIN = true;
 // Lấy danh sách file IFC
 async function fetchAllFileNames() {
   try {
-    const response = await fetch(NEXTCLOUD_URL, {
-      method: "PROPFIND",
-      headers: {
-        Authorization: `Basic ${btoa(`${SHARE_TOKEN}:${SHARE_PASSWORD}`)}`,
-        "Depth": "1",
-        "Content-Type": "application/xml",
-      },
-      body: `<?xml version="1.0" encoding="utf-8" ?>
-        <d:propfind xmlns:d="DAV:">
-          <d:prop><d:resourcetype /></d:prop>
-        </d:propfind>`,
-    });
-
+    const response = await fetch(`${PROXY_URL}/list-ifc`);
     if (!response.ok) throw new Error("Không thể lấy danh sách file");
-    const data = await response.text();
-    const files = data.match(/<d:href>[^<]+<\/d:href>/g)
-      .map(href => decodeURIComponent(href.replace(/<d:href>|<\/d:href>/g, "").split("/").pop()))
-      .filter(name => name && name.endsWith(".ifc"));
-    return files;
+    const data = await response.json();
+    return data.files || [];
   } catch (err) {
     console.error("❌ Lỗi khi lấy danh sách file:", err);
     return [];
@@ -59,13 +42,7 @@ async function loadIFC(fileName) {
     const start = performance.now();
     console.log(`📂 Đang tải file: ${fileName}`);
 
-    const fileRes = await fetch(`${NEXTCLOUD_URL}/${encodeURIComponent(fileName)}`, {
-      method: "GET",
-      headers: {
-        Authorization: `Basic ${btoa(`${SHARE_TOKEN}:${SHARE_PASSWORD}`)}`,
-      },
-    });
-
+    const fileRes = await fetch(`${PROXY_URL}/download-ifc?file=${encodeURIComponent(fileName)}`);
     if (!fileRes.ok) throw new Error(`Không thể tải file ${fileName}`);
 
     const buffer = await fileRes.arrayBuffer();
