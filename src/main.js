@@ -1,8 +1,8 @@
-import * as OBC from "https://unpkg.com/@thatopen/components@2.2.1/dist/index.js";
+import * as OBC from "@thatopen/components";
 
 const NEXTCLOUD_URL = "https://bimtechcloud.ddns.net/public.php/webdav";
 const SHARE_TOKEN = "bEYRrq8C8y2xM4q";
-const SHARE_PASSWORD = "180523bimtech"; // Thay bằng mật khẩu thực tế
+const SHARE_PASSWORD = "your_share_password"; // Thay bằng mật khẩu thực tế
 
 const container = document.getElementById("container");
 
