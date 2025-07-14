@@ -1,6 +1,6 @@
 import * as OBC from "@thatopen/components";
 
-const PROXY_URL = "https://ifc-proxy.onrender.com"; // thay bằng link Render
+const PROXY_URL = "https://my-ifc-project.onrender.com/"; // thay bằng link Render
 
 const container = document.getElementById("container");
 const components = new OBC.Components();
