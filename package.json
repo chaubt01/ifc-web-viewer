@@ -1,5 +1,6 @@
 {
   "name": "ifc-viewer",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -7,6 +8,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "vite": "^7.0.4"
+    "@thatopen/components": "^0.0.61",
+    "three": "^0.161.0",
+    "vite": "^5.2.0"
   }
 }
