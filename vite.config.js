@@ -1,11 +1,16 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-  root: '.', // Chỉ định thư mục gốc chứa index.html
+  root: '.', // thư mục gốc
   build: {
-    outDir: 'dist', // Thư mục output khi build
+    target: 'esnext', // 👈 hỗ trợ top-level await
+    outDir: 'dist', // thư mục build output
     rollupOptions: {
-      input: './index.html', // Xác định file index.html
+      input: './index.html',
     },
+  },
+  server: {
+    port: 3000,
+    open: true,
   },
 });

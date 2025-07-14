@@ -1,15 +1,9 @@
 {
-  "name": "ifc-frontend",
+  "name": "ifc-viewer",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview"
-  },
-  "dependencies": {
-    "@thatopen/components": "latest"
-  },
-  "devDependencies": {
-    "vite": "^5.0.0"
   }
 }
